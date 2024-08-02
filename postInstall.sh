@@ -6,7 +6,7 @@
 # Author    : Binary-Brawler                                     |
 # Github    : github.com/Binary-Brawler                          |
 # LinkedIn  : linkedin.com/in/brandon-walker-0b0542116/          |
-# Version   : 1.0.2                                              |
+# Version   : 1.0.0                                              |
 # Intent    : Simplistic Linux box for Haskell Development       |
 # ---------------------------------------------------------------
 
@@ -275,5 +275,5 @@ oneFuncToRuleThemAll() {
 
     complete
 }
-    
+
 oneFuncToRuleThemAll
