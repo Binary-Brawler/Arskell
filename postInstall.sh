@@ -25,7 +25,7 @@ log_warning() { echo -e "[${YELLOW}WARNING${RESET}] $1"; }
 log_error() { echo -e "[${RED}ERROR${RESET}] $1"; }
 print_info() { echo -e "[${GREEN}INFO${RESET}] $1${NEWLINE}"; }
 log_success() {
-    local num_quotes=${#motivational_quotes[@]}
+    local num_quotes=${#programming_quotes[@]}
     local random_index=$((RANDOM % num_quotes))
     local random_quote="${programming_quotes[$random_index]}"
     echo -e "${GREEN}[SUCCESS]${RESET} $1"
