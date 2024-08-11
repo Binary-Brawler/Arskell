@@ -214,7 +214,7 @@ lastMinSetup() {
     print_info "Finishing last minute setup..."
     echo 0 > /proc/sys/kernel/hung_task_timeout_secs
     mv enable_parallel.txt /mnt
-    curl -O $GITHUB/main/postInstall.sh >/dev/null 2>&1
+    curl -O $GITHUB/Main/postInstall.sh >/dev/null 2>&1
     chmod +x postInstall.sh
     mv postInstall.sh /mnt
     echo  "----------------------------"
