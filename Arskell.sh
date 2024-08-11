@@ -215,8 +215,8 @@ lastMinSetup() {
     echo 0 > /proc/sys/kernel/hung_task_timeout_secs
     mv enable_parallel.txt /mnt
     curl -O $GITHUB/main/postInstall.sh >/dev/null 2>&1
-    chmod +x hArchPost
-    mv hArchPost /mnt
+    chmod +x postInstall.sh
+    mv postInstall.sh /mnt
     echo  "----------------------------"
     print_info "Time to enter CHROOT"
     print_info "The final script has been installed and moved to your new root directory"
@@ -225,7 +225,7 @@ lastMinSetup() {
     echo ${NEWLINE}
     echo ${NEWLINE}
     echo -e "[1]${GREEN} arch-chroot /mnt${RESET}"
-    echo -e "[2]${GREEN} ./hArchPost${RESET}"
+    echo -e "[2]${GREEN} ./postInstall.sh${RESET}"
     echo ${NEWLINE}
 }
 
