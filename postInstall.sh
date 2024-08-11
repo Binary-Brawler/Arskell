@@ -59,8 +59,10 @@ function pDownload() {
         # Enable parallel downloads
         sed -i '/#ParallelDownloads/s/^#//g' /etc/pacman.conf
         print_info "Parallel Downloads Enabled."
+        rm /enable_parallel.txt
     else
         print_info "Parallel Downloads Disabled."
+        rm /enable_parallel.txt
     fi
 }
 
@@ -73,7 +75,7 @@ installer() {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake neofetch net-tools dnsutils fish --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -84,27 +86,12 @@ desktopEnv() {
     pacman -S  mate mate-extra lightdm lightdm-gtk-greeter xorg xorg-server xorg-apps xorg-xinit --noconfirm >/dev/null 2>&1
     systemctl enable lightdm >/dev/null 2>&1
     sleep 3
-    curl -O $GITHUB/main/linux-vs-windows.jpg >/dev/null 2>&1
+    curl -O $GITHUB/Main/linux-vs-windows.jpg >/dev/null 2>&1
     mv /linux-vs-windows.jpg /usr/share/backgrounds/mate/desktop/linux-vs-windows.jpg
-    curl -O $GITHUB/main/MateConfig >/dev/null 2>&1
+    curl -O $GITHUB/Main/MateConfig >/dev/null 2>&1
     sleep 2
-    dconf reset -f /org/mate/
+    dconf load / < /MateConfig
     sleep 1
-    
-    # Attempt to load MateConfig into dconf.. Pain getting this working
-    load_dconf() {
-        dconf load /org/mate/ < MateConfig
-        return $?
-    }
-
-    if ! load_dconf; then
-        log_error "---------------------------------------------------------"
-        echo "Error: Failed to load dconf settings."
-        echo "Try manually running - (dconf load /org/mate/ < MateConfig)"
-    else
-        echo "-------------------------------------"
-        echo "Successfully loaded dconf settings."
-    fi
 }
 
 # Setup Developer Env
@@ -131,12 +118,7 @@ devSetup() {
     mkdir -p /home/$userHome/AUR
     cd /home/$userHome/AUR
     git clone https://aur.archlinux.org/ghcup-hs-bin.git
-    cd ghcup-hs-bin
-    
-    # Run makepkg as the user without requiring input
-    sudo -u $userHome makepkg -si --noconfirm
-
-    echo "Setup complete!"
+    #TODO: Get this working... 
 }
 
 # Nvidia function to handle nvidia driver installation... WIP
