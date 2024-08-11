@@ -75,7 +75,7 @@ installer() {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop wireshark-qt --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -90,7 +90,9 @@ desktopEnv() {
     mv /linux-vs-windows.jpg /usr/share/backgrounds/mate/desktop/linux-vs-windows.jpg
     curl -O $GITHUB/Main/MateConfig >/dev/null 2>&1
     sleep 2
-    dconf load / < /MateConfig
+    curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
+    mv /fish.config $users/.config/fish
+    dconf load / < /MateConfig 
     sleep 1
 }
 
@@ -110,7 +112,36 @@ devSetup() {
     done
 
     # Install packages
-    pacman -S jdk-openjdk python-pip rustup go nodejs npm python3 git code neovim gimp audacity wireshark-qt vlc btop virtualbox postman docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    pacman -S \
+        # Programming
+        jdk-openjdk \
+        python-pip \
+        rustup \
+        go \
+        nodejs \
+        npm \
+        python3 \
+        git \
+
+        # Development Tools
+        code \
+        neovim \
+        pycharm-community-edition \
+        intellij-idea-community-edition \
+
+        # Graphics & Multimedia
+        gimp \
+        audacity \
+        vlc \
+
+        # Networking & System Monitoring
+        virtualbox \
+        docker \
+        postman \
+        --noconfirm \
+        >/dev/null 2>&1
+
+
 
     # Install Haskell tools
     echo "Installing Haskell tools..."
@@ -223,7 +254,7 @@ complete() {
     echo "-------------------------------------------------------------------------------------------------"
     log_success "hArch has been successfully installed on your system"
     print_info "--------------------------------------------------------------------"
-    print_info "Hack the Universe $username"
+    print_info "Hack the Universe $username w/ Haskell ;)"
     log_warning "A reboot should now take place"
     print_info "Run the following commands to reboot properly:"
     log_warning "1: exit"
