@@ -90,9 +90,7 @@ desktopEnv() {
     mv /linux-vs-windows.jpg /usr/share/backgrounds/mate/desktop/linux-vs-windows.jpg
     curl -O $GITHUB/Main/MateConfig >/dev/null 2>&1
     sleep 2
-    curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
-    mv /fish.config $users/.config/fish
-    dconf load / < /MateConfig 
+    dconf load /org/mate/ < /MateConfig
     sleep 1
 }
 
@@ -113,7 +111,6 @@ devSetup() {
 
     # Install packages
     pacman -S \
-        # Programming
         jdk-openjdk \
         python-pip \
         rustup \
@@ -122,25 +119,18 @@ devSetup() {
         npm \
         python3 \
         git \
-
-        # Development Tools
         code \
         neovim \
         pycharm-community-edition \
         intellij-idea-community-edition \
-
-        # Graphics & Multimedia
         gimp \
         audacity \
         vlc \
-
-        # Networking & System Monitoring
         virtualbox \
         docker \
         postman \
         --noconfirm \
         >/dev/null 2>&1
-
 
 
     # Install Haskell tools
@@ -149,6 +139,9 @@ devSetup() {
     mkdir -p /home/$userHome/AUR
     cd /home/$userHome/AUR
     git clone https://aur.archlinux.org/ghcup-hs-bin.git
+    #Add Config.Fish
+    curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
+    mv /fish.config /home/$userHome/.config/fish/config.fish
     #TODO: Get this working... 
 }
 
