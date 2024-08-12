@@ -90,7 +90,7 @@ desktopEnv() {
     mv /linux-vs-windows.jpg /usr/share/backgrounds/mate/desktop/linux-vs-windows.jpg
     curl -O $GITHUB/Main/MateConfig >/dev/null 2>&1
     sleep 2
-    dconf load /org/mate/ < /MateConfig
+    dconf load /org/mate/ < /MateConfig #TODO: Not working
     sleep 1
 }
 
@@ -109,29 +109,7 @@ devSetup() {
         mv vimrc_bundle_conf /home/$user/.vimrc
     done
 
-    # Install packages
-    pacman -S \
-        jdk-openjdk \
-        python-pip \
-        rustup \
-        go \
-        nodejs \
-        npm \
-        python3 \
-        git \
-        code \
-        neovim \
-        pycharm-community-edition \
-        intellij-idea-community-edition \
-        gimp \
-        audacity \
-        vlc \
-        virtualbox \
-        docker \
-        postman \
-        --noconfirm \
-        >/dev/null 2>&1
-
+    pacman -S jdk-openjdk python-pip rustup go nodejs npm python3 git code neovim gimp audacity wireshark-qt vlc btop virtualbox postman docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
 
     # Install Haskell tools
     echo "Installing Haskell tools..."
@@ -179,10 +157,10 @@ vidDriver() {
             curl -O $GITHUB/main/20-nvidia.conf >/dev/null
             mv nvidia.hook /etc/pacman.d/hooks/
             mv 20-nvidia.conf /etc/X11/xorg.conf.d/
-            bash -c "echo blacklist nouveau > /etc/modprobe.d/blacklist-nvidia-nouveau.conf"
+            echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nvidia-nouveau.conf
             echo "-------------------------------------------------------------"
             print_info "Attempting too force composition..."
-            print_info "[!] Usually fixes screen tearing w/ Nvidia drivers...
+            print_info "[!] Usually fixes screen tearing w/ Nvidia drivers..."
             bash -c "nvidia-settings --assign CurrentMetaMode=\"$(nvidia-settings -q CurrentMetaMode -t | sed 's/"/\\"/g; s/}/, ForceCompositionPipeline = On}/')\"
             # FIXME
             # Add changes to mkinitcpio.conf - WIP
