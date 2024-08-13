@@ -104,7 +104,7 @@ devSetup() {
     users=$(ls /home)
 
     # Download and set up vimrc
-    curl -O $GITHUB/main/vimrc_bundle_conf >/dev/null 2>&1
+    curl -O $GITHUB/Main/vimrc_bundle_conf >/dev/null 2>&1
     for user in $users; do
         mv vimrc_bundle_conf /home/$user/.vimrc
     done
@@ -153,15 +153,15 @@ vidDriver() {
             print_info "Installing NVIDIA Drivers..."
             echo "-------------------------------------"
             pacman -S nvidia nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null
-            curl -O $GITHUB/main/nvidia.hook >/dev/null
-            curl -O $GITHUB/main/20-nvidia.conf >/dev/null
+            curl -O $GITHUB/Main/nvidia.hook >/dev/null
+            curl -O $GITHUB/Main/20-nvidia.conf >/dev/null
             mv nvidia.hook /etc/pacman.d/hooks/
             mv 20-nvidia.conf /etc/X11/xorg.conf.d/
             echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nvidia-nouveau.conf
             echo "-------------------------------------------------------------"
             print_info "Attempting too force composition..."
             print_info "[!] Usually fixes screen tearing w/ Nvidia drivers..."
-            bash -c "nvidia-settings --assign CurrentMetaMode=\"$(nvidia-settings -q CurrentMetaMode -t | sed 's/"/\\"/g; s/}/, ForceCompositionPipeline = On}/')\"
+            bash -c "nvidia-settings --assign CurrentMetaMode=\"$(nvidia-settings -q CurrentMetaMode -t | sed 's/"/\\"/g; s/}/, ForceCompositionPipeline = On}/')"
             # FIXME
             # Add changes to mkinitcpio.conf - WIP
             # If issues, try:
