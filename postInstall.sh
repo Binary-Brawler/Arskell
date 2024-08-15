@@ -32,21 +32,6 @@ log_success() {
     echo "Motivational Quote: $random_quote"
 }
 
-retry_command() {
-    local prompt="$1"
-    local command="$2"
-    local args="${@:3}"
-    
-    while true; do
-        read -p "$prompt" "$args"
-        if eval "$command"; then
-            break
-        else
-            log_error "Try again"
-        fi
-    done
-}
-
 # Array of motivational quotes
 programming_quotes=(
     "The only way to do great work is to love what you do. - Steve Jobs"
@@ -124,7 +109,7 @@ devSetup() {
         mv vimrc_bundle_conf /home/$user/.vimrc
     done
 
-    pacman -S jdk-openjdk python-pip rustup go nodejs npm python3 git code neovim gimp audacity wireshark-qt vlc btop virtualbox postman docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    pacman -S jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox postman docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
 
     # Install Haskell tools
     echo "Installing Haskell tools..."
@@ -194,28 +179,15 @@ vidDriver() {
 userInfo() {
     echo "--------------------------------"
     print_info "Setting Root password..."
-    retry_command "Enter new root password: " "passwd"
-    
-    clear
+    passwd
+    sleep_and_clear
     echo "-------------------------------"
-    
-    # Add user
-    retry_command "Enter Username: " "useradd -mg users -G wheel,power,storage -s /usr/bin/fish" "username"
-    
-    # Configure sudoers
-    while true; do
-        if echo '%wheel ALL=(ALL:ALL) ALL' >> /etc/sudoers.d/wheel_group &&
-           chmod 440 /etc/sudoers.d/wheel_group; then
-            break
-        else
-            echo "Error updating sudoers file. Please try again."
-            rm -f /etc/sudoers.d/wheel_group
-        fi
-    done
-    
-    # Set user password
+    read -p "Enter Username: " username
+    useradd -mg users -G wheel,power,storage -s /usr/bin/fish $username
+    echo '%wheel ALL=(ALL:ALL) ALL' >> /etc/sudoers.d/wheel_group
+    chmod 440 /etc/sudoers.d/wheel_group
     print_info "Password for user: $username"
-    retry_command "Enter password for $username: " "passwd" "$username"
+    passwd $username
 }
 
 # Bootloader - eventually will be automated
