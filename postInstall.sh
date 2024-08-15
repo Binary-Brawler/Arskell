@@ -32,6 +32,21 @@ log_success() {
     echo "Motivational Quote: $random_quote"
 }
 
+retry_command() {
+    local prompt="$1"
+    local command="$2"
+    local args="${@:3}"
+    
+    while true; do
+        read -p "$prompt" "$args"
+        if eval "$command"; then
+            break
+        else
+            log_error "Try again"
+        fi
+    done
+}
+
 # Array of motivational quotes
 programming_quotes=(
     "The only way to do great work is to love what you do. - Steve Jobs"
@@ -75,7 +90,7 @@ installer() {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop wireshark-qt --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop wireshark-qt git --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -179,15 +194,28 @@ vidDriver() {
 userInfo() {
     echo "--------------------------------"
     print_info "Setting Root password..."
-    passwd
-    sleep_and_clear
+    retry_command "Enter new root password: " "passwd"
+    
+    clear
     echo "-------------------------------"
-    read -p "Enter Username: " username
-    useradd -mg users -G wheel,power,storage -s /usr/bin/fish $username
-    echo '%wheel ALL=(ALL:ALL) ALL' >> /etc/sudoers.d/wheel_group
-    chmod 440 /etc/sudoers.d/wheel_group
+    
+    # Add user
+    retry_command "Enter Username: " "useradd -mg users -G wheel,power,storage -s /usr/bin/fish" "username"
+    
+    # Configure sudoers
+    while true; do
+        if echo '%wheel ALL=(ALL:ALL) ALL' >> /etc/sudoers.d/wheel_group &&
+           chmod 440 /etc/sudoers.d/wheel_group; then
+            break
+        else
+            echo "Error updating sudoers file. Please try again."
+            rm -f /etc/sudoers.d/wheel_group
+        fi
+    done
+    
+    # Set user password
     print_info "Password for user: $username"
-    passwd $username
+    retry_command "Enter password for $username: " "passwd" "$username"
 }
 
 # Bootloader - eventually will be automated
