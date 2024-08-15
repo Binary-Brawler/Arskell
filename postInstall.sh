@@ -75,7 +75,7 @@ installer() {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop wireshark-qt git --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox postman docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -109,17 +109,20 @@ devSetup() {
         mv vimrc_bundle_conf /home/$user/.vimrc
     done
 
-    pacman -S jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox postman docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    #Add Config.Fish
+    curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
+    mv /fish.config /home/$userHome/.config/fish/config.fish
 
-    # Install Haskell tools
-    echo "Installing Haskell tools..."
+    sleep_and_clear
+
+    echo "----------------------------------------------------------"
+    echo "Installing Haskell Tools..."
+    echo "----------------------------------------------------------"
     userHome=$(ls /home | head -n 1)  # Assuming only one user for simplicity
     mkdir -p /home/$userHome/AUR
     cd /home/$userHome/AUR
     git clone https://aur.archlinux.org/ghcup-hs-bin.git
-    #Add Config.Fish
-    curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
-    mv /fish.config /home/$userHome/.config/fish/config.fish
+
     #TODO: Get this working... 
 }
 
