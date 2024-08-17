@@ -75,7 +75,7 @@ installer() {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -106,7 +106,7 @@ devSetup() {
     mv vimrc_bundle_conf /home/$user/.vimrc
     chown $user /home/$user/.vimrc
 
-    pacman -S fish btop wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    pacman -S wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
 
     curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
     mv /fish.config /home/$user/.config/fish/config.fish
