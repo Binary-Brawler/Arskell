@@ -75,7 +75,7 @@ installer() {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox postman docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -100,29 +100,30 @@ devSetup() {
     echo "Setting up a coding environment... This may take a while"
     echo "----------------------------------------------------------"
 
-    # Determine users to configure .vimrc
-    users=$(ls /home)
+    user=$(ls /home)
 
-    # Download and set up vimrc
     curl -O $GITHUB/Main/vimrc_bundle_conf >/dev/null 2>&1
-    for user in $users; do
-        mv vimrc_bundle_conf /home/$user/.vimrc
-    done
+    mv vimrc_bundle_conf /home/$user/.vimrc
+    chown $user /home/$user/.vimrc
 
-    #Add Config.Fish
+    pacman -S fish btop wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+
     curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
-    mv /fish.config /home/$userHome/.config/fish/config.fish
+    mv /fish.config /home/$user/.config/fish/config.fish
+    chown $user /home/$user/.config/fish/config.fish
 
-    sleep_and_clear
+    echo ${NEWLINE}
+    echo ${NEWLINE}
 
-    echo "----------------------------------------------------------"
     echo "Installing Haskell Tools..."
     echo "----------------------------------------------------------"
-    userHome=$(ls /home | head -n 1)  # Assuming only one user for simplicity
-    mkdir -p /home/$userHome/AUR
+    mkdir -p /home/$user/AUR
     cd /home/$userHome/AUR
     git clone https://aur.archlinux.org/ghcup-hs-bin.git
-
+    chown -R $user /home/$user/AUR
+    sudo -u $user yes | makepkg -si
+    sleep_and_clear
+    echo "GHCUP is Installed..."
     #TODO: Get this working... 
 }
 
@@ -135,6 +136,7 @@ handle_nvidia() {
         print_info "Nvidia graphics detected. Applying configuration..."
         # Add Nvidia-specific configurations here
         # This will replace vidDriver() NVD case
+        # but nobody uses this so it works locally ;)
     fi
 }
 
