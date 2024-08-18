@@ -122,16 +122,9 @@ function dev_Setup {
     echo "Installing Haskell Tools..."
     echo "----------------------------------------------------------"
     mkdir -p /home/$user/AUR
-    cd /home/$user/AUR
-    git clone https://aur.archlinux.org/ghcup-hs-bin.git >/dev/null 2>&1
-    cd ghcup-hs-bin/
     chown -R $user /home/$user/AUR
-    sudo -u $user yes | makepkg -si
-    sleep_and_clear
-    echo "GHCUP is Installed..."
-    # Add in Desktop load while we have user variable
-    sudo -u $user dconf load /org/mate/ < /MateConfig
-    #TODO: Get this working... 
+    #git clone https://aur.archlinux.org/ghcup-hs-bin.git >/dev/null 2>&1
+    curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 }
 
 # Nvidia function to handle nvidia driver installation... WIP

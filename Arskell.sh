@@ -171,14 +171,12 @@ function partition_drive {
         fi
     else
         if [[ $drive == *sd* ]]; then
-            mkfs.fat -F32 "${drive}1" 
-            mkswap "${drive}2"        
-            mkfs.ext4 "${drive}3"    
+            mkswap "${drive}1"         # Format swap partition
+            mkfs.ext4 "${drive}2"      # Format root partition
 
-            mount "${drive}3" /mnt
-            mkdir -p /mnt/boot/EFI
-            mount "${drive}1" /mnt/boot/EFI
-            swapon "${drive}2"
+            # Mount partitions
+            swapon "${drive}1"
+            mount "${drive}2" /mnt
         else
             echo "Error: Something happened with BIOS install..."
             return 1
