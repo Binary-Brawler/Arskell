@@ -112,11 +112,12 @@ function dev_Setup {
     mv vimrc_bundle_conf /home/$user/.vimrc
     chown $user /home/$user/.vimrc
 
-    pacman -S wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    pacman -S wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity vlc virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
 
     curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
+    mkdir -p /home/$user/.config/fish
     mv /fish.config /home/$user/.config/fish/config.fish
-    chown $user /home/$user/.config/fish/config.fish
+    chown $user -R /home/$user/.config/
 
     echo ${NEWLINE}
     echo ${NEWLINE}
@@ -131,7 +132,7 @@ function dev_Setup {
     sleep_and_clear
     echo "GHCUP is Installed..."
     # Add in Desktop load while we have user variable
-    sudo -U $user dconf load /org/mate/ < /MateConfig
+    sudo -u $user dconf load /org/mate/ < /MateConfig
     #TODO: Get this working... 
 }
 
