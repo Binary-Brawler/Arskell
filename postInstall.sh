@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # ---------------------------------------------------------------
 # Arskell - Post install - Downloadeded after initial script     |
@@ -6,9 +6,20 @@
 # Author    : Binary-Brawler                                     |
 # Github    : github.com/Binary-Brawler                          |
 # LinkedIn  : linkedin.com/in/brandon-walker-0b0542116/          |
-# Version   : 1.0.0                                              |
+# Version   : 1.1.0                                              |
 # Intent    : Simplistic Linux box for Haskell Development       |
 # ---------------------------------------------------------------
+#                   Functions & Purpose:                         |
+# ---------------------------------------------------------------
+#
+# p_Download  - Check parallel downloads and enable/disable 
+# Installer   - Installs base useful packages 
+# desktop_Env - Installs lightweight MATE w/ simple config setup
+# dev_Setup   - Installs code env i.e. IDE & languages 
+# vid_Driver  - Checks video driver and installs drivers (nvidia works locally ;)
+# user_Info   - Creates user and sets ROOT PASS
+# booter      - Not fully "Yet" automated bootloader
+# complete    - Working hArch linux 
 
 # Constants
 GREEN='\033[0;32m'
@@ -50,7 +61,7 @@ sleep_and_clear() {
 }
 
 # Are we enabling parallel downloads again...
-function pDownload() {
+function p_Download {
     echo "--------------------------------"
     # Inside your arch-chroot script
     enable_parallel=$(cat /enable_parallel.txt)
@@ -67,7 +78,7 @@ function pDownload() {
 }
 
 # Basic Packages
-installer() {
+function installer {
     echo "-------------------------------------------------------"
     print_info "What would you like your system name set too..."
     read -p "Enter Hostname: " hostname
@@ -75,12 +86,11 @@ installer() {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop flameshot remmina firefox cherrytree terminator chromium --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
-# Setup Desktop Env
-desktopEnv() {
+function desktop_Env {
     echo "------------------------"
     print_info "Setting up DE..."
     pacman -S  mate mate-extra lightdm lightdm-gtk-greeter xorg xorg-server xorg-apps xorg-xinit --noconfirm >/dev/null 2>&1
@@ -89,13 +99,9 @@ desktopEnv() {
     curl -O $GITHUB/Main/linux-vs-windows.jpg >/dev/null 2>&1
     mv /linux-vs-windows.jpg /usr/share/backgrounds/mate/desktop/linux-vs-windows.jpg
     curl -O $GITHUB/Main/MateConfig >/dev/null 2>&1
-    sleep 2
-    dconf load /org/mate/ < /MateConfig #TODO: Not working
-    sleep 1
 }
 
-# Setup Developer Env
-devSetup() {
+function dev_Setup {
     echo "----------------------------------------------------------"
     echo "Setting up a coding environment... This may take a while"
     echo "----------------------------------------------------------"
@@ -106,7 +112,7 @@ devSetup() {
     mv vimrc_bundle_conf /home/$user/.vimrc
     chown $user /home/$user/.vimrc
 
-    pacman -S wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc btop virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    pacman -S wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity wireshark-qt vlc virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
 
     curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
     mv /fish.config /home/$user/.config/fish/config.fish
@@ -118,12 +124,14 @@ devSetup() {
     echo "Installing Haskell Tools..."
     echo "----------------------------------------------------------"
     mkdir -p /home/$user/AUR
-    cd /home/$userHome/AUR
-    git clone https://aur.archlinux.org/ghcup-hs-bin.git
+    cd /home/$user/AUR
+    git clone https://aur.archlinux.org/ghcup-hs-bin.git >/dev/null 2>&1
     chown -R $user /home/$user/AUR
     sudo -u $user yes | makepkg -si
     sleep_and_clear
     echo "GHCUP is Installed..."
+    # Add in Desktop load while we have user variable
+    sudo -U $user dconf load /org/mate/ < /MateConfig
     #TODO: Get this working... 
 }
 
@@ -140,8 +148,7 @@ handle_nvidia() {
     fi
 }
 
-# Basic Video Driver setup
-vidDriver() {
+function vid_Driver {
     echo "----------------------------------"
     print_info "Gathering Graphics info..."
     sleep 2
@@ -152,14 +159,14 @@ vidDriver() {
         *"$AMD"*)
             print_info "Installing AMD Drivers..."
             echo "------------------------------------"
-            pacman -S xf86-video-ati xf86-video-amdgpu mesa --noconfirm >/dev/null
+            pacman -S xf86-video-ati xf86-video-amdgpu mesa --noconfirm >/dev/null 2>&1
             ;;
         *"$NVD"*)
             print_info "Installing NVIDIA Drivers..."
             echo "-------------------------------------"
-            pacman -S nvidia nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null
-            curl -O $GITHUB/Main/nvidia.hook >/dev/null
-            curl -O $GITHUB/Main/20-nvidia.conf >/dev/null
+            pacman -S nvidia nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null 2>&1
+            curl -O $GITHUB/Main/nvidia.hook >/dev/null 2>&1
+            curl -O $GITHUB/Main/20-nvidia.conf >/dev/null 2>&1
             mv nvidia.hook /etc/pacman.d/hooks/
             mv 20-nvidia.conf /etc/X11/xorg.conf.d/
             echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nvidia-nouveau.conf
@@ -180,10 +187,9 @@ vidDriver() {
     esac
 }
 
-# Setup local/root user accounts
-userInfo() {
+function user_Info {
     echo "--------------------------------"
-    print_info "Setting Root password..."
+    print_info "Set Root password..."
     passwd
     sleep_and_clear
     echo "-------------------------------"
@@ -195,8 +201,7 @@ userInfo() {
     passwd $username
 }
 
-# Bootloader - eventually will be automated
-booter() {
+function booter {
     echo "-----------------------------"
     print_info "Setting Bootloader..."
     drives=$(lsblk -f)
@@ -223,7 +228,7 @@ booter() {
     fi
 }
 
-complete() {
+function complete {
     sleep_and_clear
     echo "-------------------------------------------------------------------------------------------------"
     neofetch
@@ -239,30 +244,29 @@ complete() {
     exit
 }
 
-# oneFuncToRuleThemAll
-oneFuncToRuleThemAll() {
-    pDownload
+function one_Func_To_Rule_Them_All {
+    p_Download
     sleep_and_clear
 
     installer
     sleep_and_clear
 
-    userInfo
+    user_Info
     sleep_and_clear
 
-    vidDriver
+    vid_Driver
     sleep_and_clear
 
     booter
     sleep_and_clear
 
-    desktopEnv
+    desktop_Env
     sleep_and_clear
 
-    devSetup
+    dev_Setup
     sleep_and_clear
 
     complete
 }
 
-oneFuncToRuleThemAll
+one_Func_To_Rule_Them_All
