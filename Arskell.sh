@@ -215,7 +215,7 @@ function installer {
 function main {
     greet
     sleep 1
-    checkNet
+    check_Net
     sleep 1
     echo "----------------------------"
     print_info "Gathering drives..."
