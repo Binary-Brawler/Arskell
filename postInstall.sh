@@ -124,7 +124,7 @@ function dev_Setup {
     mkdir -p /home/$user/AUR
     chown -R $user /home/$user/AUR
     #git clone https://aur.archlinux.org/ghcup-hs-bin.git >/dev/null 2>&1
-    curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+    sudo -u $user curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 }
 
 # Nvidia function to handle nvidia driver installation... WIP
