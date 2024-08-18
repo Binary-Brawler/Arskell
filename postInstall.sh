@@ -118,10 +118,7 @@ function dev_Setup {
     mkdir -p /home/$user/.config/fish
     mv /fish.config /home/$user/.config/fish/config.fish
     chown $user -R /home/$user/.config/
-
-    echo ${NEWLINE}
-    echo ${NEWLINE}
-
+    sleep_and_clear
     echo "Installing Haskell Tools..."
     echo "----------------------------------------------------------"
     mkdir -p /home/$user/AUR
