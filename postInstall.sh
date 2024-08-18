@@ -127,6 +127,7 @@ function dev_Setup {
     mkdir -p /home/$user/AUR
     cd /home/$user/AUR
     git clone https://aur.archlinux.org/ghcup-hs-bin.git >/dev/null 2>&1
+    cd ghcup-hs-bin/
     chown -R $user /home/$user/AUR
     sudo -u $user yes | makepkg -si
     sleep_and_clear
