@@ -6,19 +6,21 @@
 # Author    : Binary-Brawler                                     |
 # Github    : github.com/Binary-Brawler                          |
 # LinkedIn  : linkedin.com/in/brandon-walker-0b0542116/          |
-# Version   : 1.1.0                                              |
+# Version   : 1.1.1                                              |
 # Intent    : Simplistic Linux box for Haskell Development       |
 #               - GHCUP w/ Stack/Cabal                           |
 #               - Sublime Text/VSCode/NeoVim                     |
 # ---------------------------------------------------------------
 #                  Functions & Purpose:                          |
-# ---------------------------------------------------------------
-# greet               - Greeter function 
-# check_Net           - Checks internet speed for parallel downloads
-# calculate_swap_size - if/else to determine SWAP size
-# partition_drive     - Automated partitioning following basic Arch install
-# installer           - Install base system and copy postInstall script
-# main                - Functional way of running an Imperative script X_x
+# ---------------------------------------------------------------------------
+# sleep_and_clear     - Repeated Sleep/Clear function
+# greet               - Greeter function                                     |
+# check_Net           - Checks internet speed for parallel downloads         |
+# calculate_swap_size - if/else to determine SWAP size                       |
+# partition_drive     - Automated partitioning following basic Arch install  |
+# installer           - Install base system and copy postInstall script      |
+# main                - Functional way of running an Imperative script X_x   |
+# ---------------------------------------------------------------------------
 
 # Constants
 GREEN='\033[0;32m'

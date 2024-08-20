@@ -5,9 +5,9 @@
 # ---------------------------------------------------------------
 # Author    : Binary-Brawler                                     |
 # Github    : github.com/Binary-Brawler                          |
+# Social    : https://bwalker.xyz
 # LinkedIn  : linkedin.com/in/brandon-walker-0b0542116/          |
-# Version   : 1.1.0                                              |
-# Intent    : Simplistic Linux box for Haskell Development       |
+# Version   : 1.1.1                                              |
 # ---------------------------------------------------------------
 #                   Functions & Purpose:                         |
 # ---------------------------------------------------------------
@@ -106,7 +106,7 @@ function dev_Setup {
     echo "Setting up a coding environment... This may take a while"
     echo "----------------------------------------------------------"
 
-    user=$(ls /home)
+    user=$(getent passwd | awk -F: '$6 ~ /^\/home/ {print $1}')
 
     curl -O $GITHUB/Main/vimrc_bundle_conf >/dev/null 2>&1
     mv vimrc_bundle_conf /home/$user/.vimrc
@@ -118,13 +118,8 @@ function dev_Setup {
     mkdir -p /home/$user/.config/fish
     mv /fish.config /home/$user/.config/fish/config.fish
     chown $user -R /home/$user/.config/
-    sleep_and_clear
-    echo "Installing Haskell Tools..."
-    echo "----------------------------------------------------------"
     mkdir -p /home/$user/AUR
     chown -R $user /home/$user/AUR
-    #git clone https://aur.archlinux.org/ghcup-hs-bin.git >/dev/null 2>&1
-    sudo -u $user curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 }
 
 # Nvidia function to handle nvidia driver installation... WIP
