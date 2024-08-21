@@ -11,9 +11,9 @@
 #               - GHCUP w/ Stack/Cabal                           |
 #               - Sublime Text/VSCode/NeoVim                     |
 # ---------------------------------------------------------------
-#                  Functions & Purpose:                          |
+#                  Function - Purpose:                           |
 # ---------------------------------------------------------------------------
-# sleep_and_clear     - Repeated Sleep/Clear function
+# sleep_and_clear     - Repeated Sleep/Clear function                        |
 # greet               - Greeter function                                     |
 # check_Net           - Checks internet speed for parallel downloads         |
 # calculate_swap_size - if/else to determine SWAP size                       |

@@ -1,5 +1,8 @@
+[atril/default]
+window-ratio=(3.2253729337454637, 1.1664231669220444)
+
 [caja/window-state]
-geometry='800x550+2479+254'
+geometry='800x550+3839+250'
 maximized=false
 start-with-sidebar=true
 start-with-status-bar=true
@@ -31,7 +34,7 @@ togglekeys-enable=false
 [desktop/background]
 color-shading-type='vertical-gradient'
 picture-filename='/usr/share/backgrounds/mate/desktop/linux-vs-windows.jpg'
-picture-options='zoom'
+picture-options='stretched'
 primary-color='rgb(88,145,188)'
 secondary-color='rgb(60,143,37)'
 
@@ -39,24 +42,36 @@ secondary-color='rgb(60,143,37)'
 gtk-theme='BlackMATE'
 icon-theme='mate'
 
+[desktop/media-handling]
+autorun-x-content-ignore=@as []
+autorun-x-content-open-folder=@as []
+autorun-x-content-start-app=['x-content/software', 'x-content/bootable-media']
+
 [desktop/peripherals/keyboard]
 numlock-state='on'
 
 [desktop/peripherals/mouse]
-cursor-theme='bloom-dark'
+cursor-theme='mate'
 
 [desktop/session]
-idle-delay=120
-session-start=1718233645
+session-start=1724277939
+
+[desktop/sound]
+event-sounds=false
+theme-name='__no_sounds'
+
+[eom/ui]
+image-collection=false
 
 [marco/general]
+num-workspaces=3
 theme='BlackMATE'
 
 [notification-daemon]
 theme='coco'
 
 [panel/general]
-object-id-list=['menu-bar', 'notification-area', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'object-0', 'object-2', 'object-8', 'object-9', 'object-10', 'object-11']
+object-id-list=['menu-bar', 'notification-area', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'object-1', 'object-2', 'object-3', 'object-4', 'object-5', 'object-0', 'object-7', 'object-8', 'object-10', 'object-9', 'object-6']
 toplevel-id-list=['top', 'bottom']
 
 [panel/objects/clock]
@@ -82,45 +97,80 @@ position=10
 toplevel-id='top'
 
 [panel/objects/object-0]
-launcher-location='/usr/share/applications/firefox.desktop'
+launcher-location='/usr/share/applications/terminator.desktop'
 object-type='launcher'
 panel-right-stick=false
-position=288
+position=358
+toplevel-id='top'
+
+[panel/objects/object-1]
+applet-iid='CPUFreqAppletFactory::CPUFreqApplet'
+object-type='applet'
+panel-right-stick=false
+position=1648
 toplevel-id='top'
 
 [panel/objects/object-10]
-launcher-location='/usr/share/applications/org.flameshot.Flameshot.desktop'
+launcher-location='io.element.Element.desktop'
 object-type='launcher'
 panel-right-stick=false
-position=524
-toplevel-id='top'
-
-[panel/objects/object-11]
-launcher-location='/usr/share/applications/code-oss.desktop'
-object-type='launcher'
-panel-right-stick=false
-position=474
+position=434
 toplevel-id='top'
 
 [panel/objects/object-2]
-launcher-location='terminator.desktop'
-object-type='launcher'
+applet-iid='MultiLoadAppletFactory::MultiLoadApplet'
+object-type='applet'
 panel-right-stick=false
-position=334
+position=1728
 toplevel-id='top'
 
-[panel/objects/object-8]
+[panel/objects/object-3]
+launcher-location='/usr/share/applications/firefox.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=226
+toplevel-id='top'
+
+[panel/objects/object-4]
+launcher-location='/usr/share/applications/org.flameshot.Flameshot.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=266
+toplevel-id='top'
+
+[panel/objects/object-5]
+launcher-location='/usr/share/applications/code-oss.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=303
+toplevel-id='top'
+
+[panel/objects/object-6]
+launcher-location='/usr/share/applications/chromium.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=468
+toplevel-id='top'
+
+[panel/objects/object-7]
 launcher-location='/usr/share/applications/cherrytree.desktop'
 object-type='launcher'
 panel-right-stick=false
-position=381
+position=394
+toplevel-id='top'
+
+[panel/objects/object-8]
+launcher-location='/usr/share/applications/org.remmina.Remmina.desktop'
+object-type='launcher'
+panel-right-stick=false
+position=-1
 toplevel-id='top'
 
 [panel/objects/object-9]
-launcher-location='/usr/share/applications/caja-browser.desktop'
+launcher-location='/usr/share/applications/org.kde.knotes.desktop'
 object-type='launcher'
 panel-right-stick=false
-position=423
+position=1611
 toplevel-id='top'
 
 [panel/objects/show-desktop]
@@ -149,35 +199,59 @@ toplevel-id='bottom'
 expand=true
 orientation='bottom'
 screen=0
-size=24
-y=1055
+size=32
+y=1047
 y-bottom=0
 
 [panel/toplevels/top]
 expand=true
 orientation='top'
 screen=0
-size=36
+size=34
 
 [panel/toplevels/top/background]
-color='rgba(198,70,0,0.656)'
+color='rgb(255,120,0)'
 type='color'
 
+[pluma]
+bottom-panel-size=140
+side-panel-active-page=827629879
+side-panel-size=200
+size=(1920, 982)
+state=132
+statusbar-visible=true
+
 [power-manager]
-action-critical-battery='hibernate'
-button-lid-ac='nothing'
-button-lid-battery='suspend'
+button-lid-ac='suspend'
 button-power='interactive'
 button-suspend='suspend'
-icon-policy='low'
+info-history-type='charge'
+info-page-number=2
+info-stats-type='charge-data'
 sleep-display-ac=0
 
 [screensaver]
-idle-activation-enabled=false
 lock-enabled=false
 mode='single'
 picture-filename='/usr/share/backgrounds/mate/desktop/Stripes.png'
 themes=['screensavers-cosmos-slideshow']
+
+[system-monitor]
+current-tab=2
+disks-interval=5000
+graph-update-interval=1000
+maximized=false
+show-all-fs=true
+solaris-mode=true
+window-state=(700, 659, 50, 50)
+
+[system-monitor/disktreenew]
+col-7-width=300
+
+[system-monitor/proctree]
+col-1-visible=true
+col-26-width=131
+col-3-visible=true
 
 [terminal/profiles/default]
 palette='#2E2E34343636:#CCCC00000000:#4E4E9A9A0606:#C4C4A0A00000:#34346565A4A4:#757550507B7B:#060698209A9A:#D3D3D7D7CFCF:#555557575353:#EFEF29292929:#8A8AE2E23434:#FCFCE9E94F4F:#72729F9FCFCF:#ADAD7F7FA8A8:#3434E2E2E2E2:#EEEEEEEEECEC'
