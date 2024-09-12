@@ -75,6 +75,7 @@ function check_Net {
         python3 -m venv speedTest && cd speedTest/bin/ && ./pip3 install speedtest-cli >/dev/null
     fi
 
+    echo ${NEWLINE}
     print_info "Calculating Internet Speed..."
     sleep 1
     local speed=$(./speedtest-cli --simple | awk '/^Download:/ {print $2}')
@@ -216,7 +217,7 @@ function main {
     greet
     sleep 1
     check_Net
-    sleep 1
+    sleep_and_clear
     echo "----------------------------"
     print_info "Gathering drives..."
     lsblk #TODO: Add something more robust

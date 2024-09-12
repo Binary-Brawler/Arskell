@@ -86,7 +86,7 @@ function installer {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch knotes nix net-tools dnsutils fish btop flameshot remmina firefox element-desktop cherrytree terminator chromium --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop flameshot remmina firefox element-desktop cherrytree terminator chromium --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -181,7 +181,7 @@ function user_Info {
     sleep_and_clear
     echo "-------------------------------"
     read -p "Enter Username: " username
-    useradd -mg users -G wheel,power,storage -s /usr/bin/fish $username
+    useradd -mg users -G wheel,power,storage -s /bin/fish $username
     echo '%wheel ALL=(ALL:ALL) ALL' >> /etc/sudoers.d/wheel_group
     chmod 440 /etc/sudoers.d/wheel_group
     print_info "Password for user: $username"
@@ -232,6 +232,7 @@ function complete {
 }
 
 function one_Func_To_Rule_Them_All {
+    sleep_and_clear
     p_Download
     sleep_and_clear
 
