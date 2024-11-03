@@ -6,7 +6,7 @@
 # Author    : Binary-Brawler                                     |
 # Github    : github.com/Binary-Brawler                          |
 # LinkedIn  : linkedin.com/in/brandon-walker-0b0542116/          |
-# Version   : 1.1.1                                              |
+# Version   : 1.1.2                                              |
 # Intent    : Simplistic Linux box for Haskell Development       |
 #               - GHCUP w/ Stack/Cabal                           |
 #               - Sublime Text/VSCode/NeoVim                     |

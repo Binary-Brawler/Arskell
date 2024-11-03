@@ -7,7 +7,7 @@
 # Github    : github.com/Binary-Brawler                          |
 # Social    : https://bwalker.xyz
 # LinkedIn  : linkedin.com/in/brandon-walker-0b0542116/          |
-# Version   : 1.1.1                                              |
+# Version   : 1.1.2                                              |
 # ---------------------------------------------------------------
 #                   Functions & Purpose:                         |
 # ---------------------------------------------------------------
@@ -140,32 +140,64 @@ function vid_Driver {
     print_info "Gathering Graphics info..."
     sleep 2
     str=$(lspci -vmm | grep VGA -A6)
+    user=$(getent passwd | awk -F: '$6 ~ /^\/home/ {print $1}')
+    
+    # Define driver packages
     AMD='AMD'
     NVD='NVIDIA'
+    Turing='nvidia-open'
+    Maxwell='nvidia'
+    Kepler='nvidia-470xx-dkms'
+    Fermi='nvidia-390xx-dkms'
+    Tesla='nvidia-340xx-dkms'
+    
     case $str in
         *"$AMD"*)
             print_info "Installing AMD Drivers..."
             echo "------------------------------------"
-            pacman -S xf86-video-ati xf86-video-amdgpu mesa --noconfirm >/dev/null 2>&1
+            pacman -S xf86-video-ati xf86-video-amdgpu mesa --noconfirm >/dev/null
             ;;
         *"$NVD"*)
-            print_info "Installing NVIDIA Drivers..."
+            # Check Nvidia GPU architecture
+            if echo "$str" | grep -q "NV160\|TU"; then
+                driver=$Turing
+            elif echo "$str" | grep -q "NV110\|GM"; then
+                driver=$Maxwell
+            elif echo "$str" | grep -q "NVE0\|GK"; then
+                driver=$Kepler
+            elif echo "$str" | grep -q "NVC0\|GF"; then
+                driver=$Fermi
+            elif echo "$str" | grep -q "NV50\|G8"; then
+                driver=$Tesla
+            else
+                print_info "Unable to determine specific Nvidia architecture. Installing the default driver..."
+                print_info "Check dmesg for any driver issues..."
+                driver=$Maxwell # Fallback to a common driver
+            fi
+            
+            print_info "Installing Nvidia Drivers: $driver..."
             echo "-------------------------------------"
-            pacman -S nvidia nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null 2>&1
-            curl -O $GITHUB/Main/nvidia.hook >/dev/null 2>&1
-            curl -O $GITHUB/Main/20-nvidia.conf >/dev/null 2>&1
+            if [[ $driver == "nvidia-open" || $driver == "nvidia" ]]; then
+                # Install for Turing and Maxwell
+                pacman -S "$driver" nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null
+            else
+                git clone "https://aur.archlinux.org/$driver.git" /tmp/$driver
+                cd /tmp/$driver
+                su - $user -c makepkg -si --noconfirm
+                cd -
+                #rm -rf /tmp/$driver
+            fi
+
+            curl -O $GITHUB/main/conf/nvidia.hook 2>/dev/null
+            curl -O $GITHUB/main/conf/20-nvidia.conf 2>/dev/null
+            mkdir -p /etc/pacman.d/hooks/ /etc/X11/xorg.conf.d/
             mv nvidia.hook /etc/pacman.d/hooks/
             mv 20-nvidia.conf /etc/X11/xorg.conf.d/
             echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nvidia-nouveau.conf
             echo "-------------------------------------------------------------"
-            print_info "Attempting too force composition..."
+            print_info "Attempting to force composition..."
             print_info "[!] Usually fixes screen tearing w/ Nvidia drivers..."
-            bash -c "nvidia-settings --assign CurrentMetaMode=\"$(nvidia-settings -q CurrentMetaMode -t | sed 's/"/\\"/g; s/}/, ForceCompositionPipeline = On}/')"
-            # FIXME
-            # Add changes to mkinitcpio.conf - WIP
-            # If issues, try:
-            # xrandr --setprovideroutputsource modesetting NVIDIA-0
-            # xrandr --auto
+            #bash -c "nvidia-settings --assign CurrentMetaMode=\"$(nvidia-settings -q CurrentMetaMode -t | sed 's/"/\\"/g; s/}/, ForceCompositionPipeline = On}/')\""
             ;;
         *)
             print_info "Unable to determine Graphics info.. Installing default drivers"
