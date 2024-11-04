@@ -92,7 +92,7 @@ function installer {
 
 function desktop_Env {
     echo "------------------------"
-    print_info "Setting up DE..."
+    print_info "Setting up MATE DE..."
     pacman -S  mate mate-extra lightdm lightdm-gtk-greeter xorg xorg-server xorg-apps xorg-xinit --noconfirm >/dev/null 2>&1
     systemctl enable lightdm >/dev/null 2>&1
     sleep 3
@@ -181,6 +181,7 @@ function vid_Driver {
                 # Install for Turing and Maxwell
                 pacman -S "$driver" nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null
             else
+                pacman -S nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null
                 git clone "https://aur.archlinux.org/$driver.git" /tmp/$driver
                 cd /tmp/$driver
                 su $user
