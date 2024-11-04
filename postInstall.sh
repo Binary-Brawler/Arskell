@@ -181,7 +181,7 @@ function vid_Driver {
                 # Install for Turing and Maxwell
                 pacman -S "$driver" nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null
             else
-                pacman -S nvidia-settings nvidia-utils glxinfo nvtop --noconfirm >/dev/null
+                pacman -S nvidia-settings glxinfo nvtop --noconfirm >/dev/null
                 git clone "https://aur.archlinux.org/$driver.git" /tmp/$driver
                 cd /tmp/$driver
                 su $user
