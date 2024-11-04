@@ -86,7 +86,7 @@ function installer {
     sleep_and_clear
     echo  "------------------------------------"
     print_info "Installing useful packages..." 
-    pacman -S dkms linux-headers mlocate cmake make neofetch nix net-tools dnsutils fish btop flameshot remmina firefox element-desktop cherrytree terminator chromium --noconfirm >/dev/null 2>&1
+    pacman -S dkms linux-headers mlocate git cmake make neofetch nix net-tools dnsutils fish btop flameshot remmina firefox element-desktop cherrytree terminator chromium --noconfirm >/dev/null 2>&1
     hwclock --systohc
 }
 
@@ -96,9 +96,9 @@ function desktop_Env {
     pacman -S  mate mate-extra lightdm lightdm-gtk-greeter xorg xorg-server xorg-apps xorg-xinit --noconfirm >/dev/null 2>&1
     systemctl enable lightdm >/dev/null 2>&1
     sleep 3
-    curl -O $GITHUB/Main/linux-vs-windows.jpg >/dev/null 2>&1
+    curl -O $GITHUB/Main/conf/linux-vs-windows.jpg >/dev/null 2>&1
     mv /linux-vs-windows.jpg /usr/share/backgrounds/mate/desktop/linux-vs-windows.jpg
-    curl -O $GITHUB/Main/MateConfig >/dev/null 2>&1
+    curl -O $GITHUB/Main/conf/MateConfig >/dev/null 2>&1
 }
 
 function dev_Setup {
@@ -108,13 +108,13 @@ function dev_Setup {
 
     user=$(getent passwd | awk -F: '$6 ~ /^\/home/ {print $1}')
 
-    curl -O $GITHUB/Main/vimrc_bundle_conf >/dev/null 2>&1
+    curl -O $GITHUB/Main/conf/vimrc_bundle_conf >/dev/null 2>&1
     mv vimrc_bundle_conf /home/$user/.vimrc
     chown $user /home/$user/.vimrc
 
-    pacman -S wireshark-qt git jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity vlc virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
+    pacman -S wireshark-qt jdk-openjdk python-pip rustup go nodejs npm python3 code neovim gimp audacity vlc virtualbox docker pycharm-community-edition intellij-idea-community-edition --noconfirm >/dev/null 2>&1
 
-    curl -O $GITHUB/Main/fish.config >/dev/null 2>&1
+    curl -O $GITHUB/Main/conf/fish.config >/dev/null 2>&1
     mkdir -p /home/$user/.config/fish
     mv /fish.config /home/$user/.config/fish/config.fish
     chown $user -R /home/$user/.config/
@@ -183,16 +183,17 @@ function vid_Driver {
             else
                 git clone "https://aur.archlinux.org/$driver.git" /tmp/$driver
                 cd /tmp/$driver
-                su - $user -c makepkg -si --noconfirm
+                su $user
+                makepkg -si --noconfirm
                 cd -
                 #rm -rf /tmp/$driver
             fi
 
-            curl -O $GITHUB/main/conf/nvidia.hook 2>/dev/null
-            curl -O $GITHUB/main/conf/20-nvidia.conf 2>/dev/null
+            curl -O $GITHUB/Main/conf/nvidia.hook 2>/dev/null
+            curl -O $GITHUB/Main/conf/20-nvidia.conf 2>/dev/null
             mkdir -p /etc/pacman.d/hooks/ /etc/X11/xorg.conf.d/
-            mv nvidia.hook /etc/pacman.d/hooks/
-            mv 20-nvidia.conf /etc/X11/xorg.conf.d/
+            mv /nvidia.hook /etc/pacman.d/hooks/
+            mv /20-nvidia.conf /etc/X11/xorg.conf.d/
             echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nvidia-nouveau.conf
             echo "-------------------------------------------------------------"
             print_info "Attempting to force composition..."
