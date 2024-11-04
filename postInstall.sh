@@ -147,9 +147,9 @@ function vid_Driver {
     NVD='NVIDIA'
     Turing='nvidia-open'
     Maxwell='nvidia'
-    Kepler='nvidia-470xx-dkms'
-    Fermi='nvidia-390xx-dkms'
-    Tesla='nvidia-340xx-dkms'
+    Kepler='nvidia-470xx-utils'
+    Fermi='nvidia-390xx-utils'
+    Tesla='nvidia-340xx-utils'
     
     case $str in
         *"$AMD"*)
